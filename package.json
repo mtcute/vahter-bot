@@ -1,0 +1,36 @@
+{
+    "name": "mtcute-vahter",
+    "license": "MIT",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "prepare": "husky install",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "run": "tsc && dotenv node ./dist/index.js",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@mtcute/crypto-node": "^1.0.0",
+        "@mtcute/dispatcher": "^1.0.0",
+        "@mtcute/node": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.7",
+        "@typescript-eslint/eslint-plugin": "^6.8.0",
+        "@typescript-eslint/parser": "^6.8.0",
+        "dotenv-cli": "^7.3.0",
+        "eslint": "^8.52.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-import-resolver-typescript": "^3.6.1",
+        "eslint-plugin-ascii": "^1.0.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.0.2",
+        "prettier": "^3.0.3",
+        "typescript": "^5.2.2"
+    }
+}
