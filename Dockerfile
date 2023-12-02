@@ -5,7 +5,7 @@ RUN apk add python3 make g++ && \
     corepack enable && \
     corepack prepare pnpm@8.7.1 --activate
 
-COPY package*.json pnpm*.yaml tsconfig.json .npmrc ./
+COPY package*.json pnpm*.yaml tsconfig.json ./
 RUN pnpm install --frozen-lockfile
 
 COPY src /app/src

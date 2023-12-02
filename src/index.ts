@@ -118,7 +118,8 @@ dp.onChatMemberUpdate(
 dp.onNewMessage(
     filters.and(
         filters.chat('supergroup'),
-        (msg: MessageContext) => msg.replyToMessageId === null && !msg.isAutomaticForward,
+        filters.not(filters.replyOrigin('same_chat')),
+        (msg: MessageContext) => !msg.isAutomaticForward,
     ),
     async (msg) => {
         try {
