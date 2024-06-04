@@ -1,10 +1,11 @@
 import { Dispatcher, filters, MessageContext } from '@mtcute/dispatcher'
-import { BotKeyboard, html, NodeTelegramClient, tl } from '@mtcute/node'
+import { BotKeyboard, html, TelegramClient, tl } from '@mtcute/node'
 import { links } from '@mtcute/node/utils.js'
 
+import 'heapdump'
 import * as env from './env.js'
 
-const tg = new NodeTelegramClient({
+const tg = new TelegramClient({
     apiId: env.API_ID,
     apiHash: env.API_HASH,
     storage: 'bot-data/session',
@@ -34,7 +35,7 @@ dp.onNewMessage(filters.start, async (msg) => {
                     BotKeyboard.url(
                         'Add me to a group',
                         links.botAddToGroup({
-                            bot: tg.getMyUsername()!,
+                            bot: (await tg.getMyUsername())!,
                             parameter: 'group',
                             admin: ['banUsers', 'deleteMessages'],
                         }),
@@ -118,7 +119,7 @@ dp.onChatMemberUpdate(
 dp.onNewMessage(
     filters.and(
         filters.chat('supergroup'),
-        filters.not(filters.replyOrigin('same_chat')),
+        filters.not(filters.or(filters.replyOrigin('same_chat'), filters.replyOrigin('other_chat'))),
         (msg: MessageContext) => !msg.isAutomaticForward,
     ),
     async (msg) => {
