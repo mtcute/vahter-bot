@@ -1,15 +1,19 @@
-FROM node:20-alpine
+FROM node:22-slim AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+COPY . /app
 WORKDIR /app
 
-RUN apk add python3 py3-pip make g++ && \
-    python3 -m pip install --break-system-packages setuptools && \
-    corepack enable && \
-    corepack prepare pnpm@8.7.1 --activate
+ENV HOME="/app"
+RUN chmod -R 777 /app
+RUN corepack enable && corepack prepare
 
-COPY package*.json pnpm*.yaml tsconfig.json ./
-RUN pnpm install --frozen-lockfile
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-COPY src /app/src
-RUN pnpm run build
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
 
-CMD [ "node", "/app/dist/index.js" ]
+CMD [ "pnpm", "run", "start" ]

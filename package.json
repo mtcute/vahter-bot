@@ -1,37 +1,25 @@
 {
-    "name": "mtcute-vahter",
-    "license": "MIT",
-    "version": "1.0.0",
-    "main": "dist/index.js",
-    "type": "module",
-    "scripts": {
-        "prepare": "husky install",
-        "lint": "eslint .",
-        "lint:fix": "eslint --fix .",
-        "format": "prettier --write \"src/**/*.ts\"",
-        "run": "tsc && dotenv node ./dist/index.js",
-        "build": "tsc"
-    },
-    "dependencies": {
-        "@mtcute/crypto-node": "0.12.0",
-        "@mtcute/dispatcher": "0.12.0",
-        "@mtcute/node": "0.12.0",
-        "heapdump": "^0.3.15"
-    },
-    "devDependencies": {
-        "@types/node": "^20.10.5",
-        "@typescript-eslint/eslint-plugin": "^6.14.0",
-        "@typescript-eslint/parser": "^6.14.0",
-        "dotenv-cli": "^7.3.0",
-        "eslint": "^8.56.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-import-resolver-typescript": "^3.6.1",
-        "eslint-plugin-ascii": "^1.0.0",
-        "eslint-plugin-import": "^2.29.1",
-        "eslint-plugin-simple-import-sort": "^10.0.0",
-        "husky": "^8.0.3",
-        "lint-staged": "^15.2.0",
-        "prettier": "^3.1.1",
-        "typescript": "^5.3.3"
-    }
+  "name": "mtcute-vahter",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "dev": "dotenv tsx watch ./src/index.ts",
+    "start": "tsx ./src/index.ts"
+  },
+  "dependencies": {
+    "@mtcute/dispatcher": "0.23.0",
+    "@mtcute/node": "0.23.0",
+    "tsx": "4.19.4"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.12.1",
+    "@types/node": "^20.10.5",
+    "dotenv-cli": "^7.3.0",
+    "eslint": "^9.26.0",
+    "typescript": "^5.3.3"
+  }
 }
