@@ -1,4 +1,5 @@
 import type { MessageContext } from '@mtcute/dispatcher'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { Dispatcher, filters } from '@mtcute/dispatcher'
 import { BotKeyboard, html, TelegramClient, tl } from '@mtcute/node'
 import { links } from '@mtcute/node/utils.js'
@@ -13,6 +14,20 @@ const tg = new TelegramClient({
     catchUp: true,
   },
 })
+
+const badChats = new Set<number>()
+const badChatsFile = 'bot-data/bad-chats.json'
+
+try {
+  const data = readFileSync(badChatsFile, 'utf-8')
+  const chats = JSON.parse(data)
+
+  for (const chat of chats) {
+    badChats.add(chat)
+  }
+} catch (e) {
+  console.log('Failed to load bad chats', e)
+}
 
 const dp = Dispatcher.for(tg)
 
@@ -48,7 +63,7 @@ dp.onNewMessage(filters.start, async (msg) => {
 })
 
 dp.onChatMemberUpdate(filters.and(filters.chatMemberSelf, filters.chatMember('added')), async (upd) => {
-  if (upd.chat.chatType !== 'supergroup') {
+  if (upd.chat.chatType !== 'supergroup' || badChats.has(upd.chat.id)) {
     await upd.client.leaveChat(upd.chat)
   }
 
@@ -128,6 +143,34 @@ dp.onNewMessage(
         throw e
       }
     }
+  },
+)
+
+dp.onNewMessage(
+  filters.and(
+    filters.chat('user'),
+    filters.userId(1787945512),
+    filters.command('/badchat'),
+  ),
+  async (msg) => {
+    const chatId = msg.command[1]
+
+    if (!chatId) {
+      await msg.answerText('Usage: /badchat <chat id>')
+      return
+    }
+
+    badChats.add(Number(chatId))
+    writeFileSync(badChatsFile, JSON.stringify(Array.from(badChats)))
+
+    // try to leave the chat
+    try {
+      await tg.leaveChat(Number(chatId))
+    } catch (e) {
+      console.error('Failed to leave chat', e)
+    }
+
+    await msg.answerText('Chat added to bad chats')
   },
 )
 

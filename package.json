@@ -11,8 +11,8 @@
     "start": "tsx ./src/index.ts"
   },
   "dependencies": {
-    "@mtcute/dispatcher": "0.23.0",
-    "@mtcute/node": "0.23.0",
+    "@mtcute/dispatcher": "0.24.3",
+    "@mtcute/node": "0.24.3",
     "tsx": "4.19.4"
   },
   "devDependencies": {
